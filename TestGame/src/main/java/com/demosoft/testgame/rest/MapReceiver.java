@@ -23,6 +23,9 @@ public class MapReceiver {
     private RestTemplate restTemplate;
 
     @Autowired
+    private HttpUtils httpUtils;
+
+    @Autowired
     @Qualifier("jacksonObjectMapper")
     private MyJsonMapper myJsonMapper;
 
@@ -31,6 +34,7 @@ public class MapReceiver {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<java.lang.String> responseEntity = restTemplate.exchange("http://localhost:8080/map/cell/all", HttpMethod.GET, entity, String.class);
+        httpUtils.processFirstRequest(responseEntity);
         Map.MapTransportBean mapTransportBean = null;
         try {
             mapTransportBean = myJsonMapper.readValue(responseEntity.getBody(), new TypeReference<Map.MapTransportBean>() {

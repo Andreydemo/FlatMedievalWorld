@@ -18,6 +18,8 @@ public class Player {
     private
     MapService mapService;
 
+    private String jsessionid;
+
     private Point point = new Point(25, 25);
     private TactGenerator.TactToken tactToken = TactGenerator.getTactToken();
 
@@ -64,5 +66,13 @@ public class Player {
     public boolean isCanMoveTo(Point point) {
         Cell cell = mapService.getCell(point);
         return cell.getCellType().isCanMove();
+    }
+
+    public String getJsessionid() {
+        return jsessionid;
+    }
+
+    public void setJsessionid(String jsessionid) {
+        this.jsessionid = jsessionid;
     }
 }

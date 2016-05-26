@@ -2,6 +2,7 @@ package com.demosoft.testgameserver.rest;
 
 import com.demosoft.testgameserver.map.MapComponent;
 import com.demosoft.testgameserver.map.enity.Map;
+import com.demosoft.testgameserver.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/map")
 public class MapService {
+
+    @Autowired
+    private Player player;
 
     @Autowired
     MapComponent mapComponent;
@@ -33,6 +37,7 @@ public class MapService {
 
     @RequestMapping(value = "/cell/all")
     public Map.MapTransportBean getAll() {
+        System.out.println(player);
         return mapComponent.map.getMapTransportBean();
     }
 }
