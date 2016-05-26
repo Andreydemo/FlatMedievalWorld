@@ -26,7 +26,7 @@ public class MapService {
     }
 
 
-    public Cell[][] getPoints(Point point, int rad) {
+    public Cell[][] getCells(Point point, int rad) {
         int length = 1 + rad * 2;
 
         Cell[][] points = new Cell[length][];
@@ -35,6 +35,10 @@ public class MapService {
             System.arraycopy(map.getCells()[point.getX() - rad + i], point.getY() - rad, points[i], 0, length);
         }
         return points;
+    }
+
+    public Cell getCell(Point point) {
+        return map.getCells()[point.getX()][point.getY()];
     }
 
 

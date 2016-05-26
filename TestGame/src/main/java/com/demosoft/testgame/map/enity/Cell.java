@@ -1,7 +1,10 @@
 package com.demosoft.testgame.map.enity;
 
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.Serializable;
 
 import static com.demosoft.testgame.map.MapUtils.*;
@@ -17,20 +20,48 @@ public class Cell implements Serializable {
     }
 
     public enum CellType {
-        GROUND(Color.orange, "▒","ground.png"), SAND(Color.YELLOW, "2"), SEA(Color.BLUE, "░","sea.png"), RIVER(Color.cyan, "3"), GRASS(Color.GREEN, "4"), BUILDING(Color.black, "5");
+        GROUND(Color.orange, "▒", true, "ground.png"), SAND(Color.YELLOW, "2", true), SEA(Color.BLUE, "░", false, "sea.png"), RIVER(Color.cyan, "3", false), GRASS(Color.GREEN, "4", true), BUILDING(Color.black, "5", true);
 
         private Color color;
         private String code;
         private String textureName;
+        private BufferedImage bufferedImage;
+        private boolean canMove;
 
-        CellType(Color color, String code) {
+        public BufferedImage getBufferedImage() {
+            if (bufferedImage == null && textureName != null) {
+                try {
+                    bufferedImage = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream(textureName));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return bufferedImage;
+        }
+
+        public void setBufferedImage(BufferedImage bufferedImage) {
+            this.bufferedImage = bufferedImage;
+        }
+
+        CellType(Color color, String code, boolean canMove) {
             this.color = color;
             this.code = code;
+            this.canMove = canMove;
         }
-        CellType(Color color, String code,String textureName) {
+
+        CellType(Color color, String code, boolean canMove, String textureName) {
             this.color = color;
             this.code = code;
             this.textureName = textureName;
+            this.canMove = canMove;
+        }
+
+        public boolean isCanMove() {
+            return canMove;
+        }
+
+        public void setCanMove(boolean canMove) {
+            this.canMove = canMove;
         }
 
         public String getTextureName() {

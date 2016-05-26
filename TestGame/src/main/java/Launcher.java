@@ -10,13 +10,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Launcher {
 
     public static void main(String[] args) {
-        //ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfiguration.class);
-        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfiguration.class);
+      /*  LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "graphicsdemo";
         //cfg.useGL20 = true;
         cfg.width = 480;
         cfg.height = 320;
 
-        new LwjglApplication(new LibGDXApplication(), cfg);
+        new LwjglApplication(new LibGDXApplication(), cfg);*/
     }
 }

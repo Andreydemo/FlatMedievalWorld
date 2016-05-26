@@ -2,7 +2,6 @@ package com.demosoft.testgame;
 
 import com.demosoft.testgame.map.enity.Cell;
 import com.demosoft.testgame.map.service.MapService;
-import com.demosoft.testgame.rest.MapReceiver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,31 +52,15 @@ public class GameScene extends JPanel implements Initible {
             System.out.println("Key pressed");
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_UP:
-                    if (customComponents != null && TactGenerator.isTheNextTact(tactToken)) {
-                        player.getPoint().setY(player.getPoint().getY() - 1);
-                        //customComponents.setLocation(customComponents.getX(), customComponents.getY() - 50);
-                    }
                     player.up();
                     break;
                 case KeyEvent.VK_DOWN:
-                    if (customComponents != null && TactGenerator.isTheNextTact(tactToken)) {
-                        //customComponents.setLocation(customComponents.getX(), customComponents.getY() + 50);
-                        player.getPoint().setY(player.getPoint().getY() + 1);
-                    }
                     player.down();
                     break;
                 case KeyEvent.VK_LEFT:
-                    if (customComponents != null && TactGenerator.isTheNextTact(tactToken)) {
-                        player.getPoint().setX(player.getPoint().getX() - 1);
-                        //customComponents.setLocation(customComponents.getX() - 50, customComponents.getY());
-                    }
                     player.left();
                     break;
                 case KeyEvent.VK_RIGHT:
-                    if (customComponents != null && TactGenerator.isTheNextTact(tactToken)) {
-                        player.getPoint().setX(player.getPoint().getX() + 1);
-                        // customComponents.setLocation(customComponents.getX() + 50, customComponents.getY());
-                    }
                     player.right();
                     break;
             }
@@ -178,7 +161,7 @@ public class GameScene extends JPanel implements Initible {
             super.paintComponent(g);
             g.setColor(Color.green);
             // g.fillRect(margin, margin, 500, 500);
-            Cell[][] cells = mapService.getPoints(player.getPoint(), RADIUS);
+            Cell[][] cells = mapService.getCells(player.getPoint(), RADIUS);
             System.out.println("Rendering according to player position x:" + player.getPoint().getX() + " y:" + player.getPoint().getY());
 
             for (int i = 0; i < cells.length; i++) {
@@ -196,13 +179,8 @@ public class GameScene extends JPanel implements Initible {
 
         public void renderCell(Graphics g, Cell cell, Point awtPoint) {
             if (cell.getCellType().getTextureName() != null) {
-                try {
-                    final BufferedImage image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream(cell.getCellType().getTextureName()));
-                    g.drawImage(image, (int) awtPoint.getX(), (int) awtPoint.getY(), this);
-                    g.finalize();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                g.drawImage(cell.getCellType().getBufferedImage(), (int) awtPoint.getX(), (int) awtPoint.getY(), this);
+                g.finalize();
             } else {
                 g.setColor(cell.getCellType().getColor());
                 g.fillRect((int) awtPoint.getX(), (int) awtPoint.getY(), CELL_PIXEL_WIDTH, CELL_PIXEL_WIDTH);

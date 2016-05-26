@@ -16,9 +16,10 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class MapUtils {
 
-    public static Map generateMap(int size, int continentCount) {
-        return generateGround(MapUtils.generateSea(size), continentCount);
+    public static Map generateMap(int size, int continentCount, int iteration, int seaCount, int sandCount) {
+        return generateGround(MapUtils.generateSea(size), continentCount, iteration, seaCount, sandCount);
     }
+
 
     public static List<Cell> getNeightbosrs(Cell cell, Cell.CellType cellType, Map map) {
         List<Point> points = getNeightbosrPoints(cell.getPoint());
@@ -74,14 +75,14 @@ public class MapUtils {
         return new Map(cells);
     }
 
-    public static Map generateGround(Map cells, int coninentCount) {
+    public static Map generateGround(Map cells, int coninentCount, int iteration, int seaCount, int sandCount) {
         double sqrt = Math.sqrt(coninentCount);
         int res = (int) sqrt; //целая часть
         double res2 = sqrt - res; //дробная часть
         if (res2 > 0) {
             sqrt = res + 1;
         }
-        List<Cell> startPoint = getRandomCells(getStartContinentPoints(cells, (int) sqrt), coninentCount);
+        List<Cell> startPoint = getRandomCells(getStartContinentPoints(cells, (int) sqrt, seaCount), coninentCount);
         List<List<Cell>> continents = new ArrayList<>();
 
         for (Cell startCell : startPoint) {
@@ -90,27 +91,64 @@ public class MapUtils {
             continent.add(startCell);
             continents.add(continent);
         }
-        generateGroundCells(continents, cells, 19);
+        generateGroundCells(continents, cells, iteration, seaCount);
 
         return cells;
     }
 
-    public static void generateGroundCells(List<List<Cell>> continents, Map map, int count) {
-        for (int i = 0; i < count; i++) {
-            generateGroundCells(continents, map);
-        }
+    public static Map generateCoast(Map cells, int seaCount, int sandCount) {
+        return null;
     }
 
-    public static void generateGroundCells(List<List<Cell>> continents, Map map) {
+    public static void generateGroundCells(List<List<Cell>> continents, Map map, int count, int seaCount) {
+        for (int i = 0; i < count; i++) {
+            generateGroundCells(continents, map, seaCount);
+        }
         for (List<Cell> continent : continents) {
             List<Cell> toAdd = new ArrayList<>();
             for (Cell cell : continent) {
-                List<Cell> neighbors = MapUtils.getNeightbosrs(cell, Cell.CellType.SEA, map);
-                if (neighbors.size() > 3) {
-                    Cell newGroundCell = getRandomCells(neighbors, 3).get(0);
-                    newGroundCell.setCellType(Cell.CellType.GROUND);
-                    map.processIndexes(cell);
-                    toAdd.add(newGroundCell);
+                if (isGroundAllowedBySeaCount(cell, map, seaCount)) {
+                    List<Cell> neighbors = MapUtils.getNeightbosrs(cell, Cell.CellType.SEA, map);
+                    if (neighbors.size() == 1) {
+                        Cell newGroundCell = getRandomCells(neighbors, 1).get(0);
+                        if (isGroundAllowedBySeaCount(newGroundCell, map, seaCount)) {
+                            newGroundCell.setCellType(Cell.CellType.GROUND);
+                            map.processIndexes(cell);
+                            toAdd.add(newGroundCell);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static boolean isGroundAllowedBySeaCount(Cell cell, Map map, int seaCount) {
+        Point point = cell.getPoint();
+        int length = map.getCells()[0].length;
+
+        if (point.getX() < seaCount || point.getY() < seaCount) {
+            return false;
+        }
+        if (point.getX() > length - seaCount || point.getY() > length - seaCount) {
+            return false;
+        }
+        return true;
+    }
+
+    public static void generateGroundCells(List<List<Cell>> continents, Map map, int seaCount) {
+        for (List<Cell> continent : continents) {
+            List<Cell> toAdd = new ArrayList<>();
+            for (Cell cell : continent) {
+                if (isGroundAllowedBySeaCount(cell, map, seaCount)) {
+                    List<Cell> neighbors = MapUtils.getNeightbosrs(cell, Cell.CellType.SEA, map);
+                    if (neighbors.size() > 3) {
+                        Cell newGroundCell = getRandomCells(neighbors, 3).get(0);
+                        if (isGroundAllowedBySeaCount(newGroundCell, map, seaCount)) {
+                            newGroundCell.setCellType(Cell.CellType.GROUND);
+                            map.processIndexes(cell);
+                            toAdd.add(newGroundCell);
+                        }
+                    }
                 }
             }
             continent.addAll(toAdd);
@@ -150,13 +188,13 @@ public class MapUtils {
         return result;
     }
 
-    public static List<Cell> getStartContinentPoints(Map map, int sqrt) {
+    public static List<Cell> getStartContinentPoints(Map map, int sqrt, int seaCount) {
         List<Cell> cells = new ArrayList<>();
 
         for (int i = 1; i <= sqrt; i++) {
             for (int j = 1; j <= sqrt; j++) {
 
-                Point point = new Point((map.getLength() / sqrt) * i - 1 - (map.getLength() / sqrt) / 2, (map.getLength() / sqrt) * j - 1 - (map.getLength() / sqrt) / 2);
+                Point point = new Point(seaCount + ((map.getLength() - seaCount * 2) / sqrt) * i - 1 - ((map.getLength() - seaCount * 2) / sqrt) / 2, seaCount + ((map.getLength() - seaCount * 2) / sqrt) * j - 1 - ((map.getLength() - seaCount * 2) / sqrt) / 2);
 
                 Cell startPoint = map.getCell(point);
                 System.out.println(startPoint);
@@ -176,4 +214,8 @@ public class MapUtils {
             System.out.println();
         }
     }
+
+   /* public static void main(String[] args) {
+        print(generateMap(200, 50, 23, 10, 5));
+    }*/
 }

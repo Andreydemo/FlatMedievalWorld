@@ -15,6 +15,6 @@ public class MapComponent {
 
     @PostConstruct
     public void init() {
-        map = MapUtils.generateMap(100, 17);
+        map = MapUtils.generateMap(200, 50, 23, 10, 5);
     }
 }
