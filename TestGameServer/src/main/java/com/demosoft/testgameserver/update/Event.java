@@ -1,6 +1,7 @@
 package com.demosoft.testgameserver.update;
 
-import java.awt.*;
+
+import com.demosoft.testgameserver.map.enity.Point;
 
 /**
  * Created by Andrii_Korkoshko on 5/26/2016.

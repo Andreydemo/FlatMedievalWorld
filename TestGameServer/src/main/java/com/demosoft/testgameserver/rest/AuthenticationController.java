@@ -39,8 +39,10 @@ public class AuthenticationController {
         playerServiceResponse.setSuccess(authenticationServiceResponse.isSuccess());
         playerServiceResponse.setErrors(authenticationServiceResponse.getErrors());
         if (authenticationServiceResponse.isSuccess()) {
-            profile.getPlayer().put(playerService.getPlayerById(profile.getUser().getPlayerId()));
+            Player player = playerService.getPlayerById(profile.getUser().getPlayerId());
+            profile.getPlayer().put(player);
             profile.setLogedIn(true);
+            playerServiceResponse.setObject(player);
         }
         return playerServiceResponse;
     }
@@ -51,9 +53,14 @@ public class AuthenticationController {
         User user = new User();
         user.setLogin(login);
         user.setPassword(password);
-        ServiceResponse authenticationServiceResponse = authenticationService.register(user);
+        ServiceResponse<User> authenticationServiceResponse = authenticationService.register(user);
         playerServiceResponse.setSuccess(authenticationServiceResponse.isSuccess());
         playerServiceResponse.setErrors(authenticationServiceResponse.getErrors());
+        if (authenticationServiceResponse.isSuccess()) {
+            profile.setLogedIn(true);
+            playerServiceResponse.setObject(playerService.getPlayerById(authenticationServiceResponse.getObject().getPlayerId()));
+        }
         return playerServiceResponse;
     }
+
 }

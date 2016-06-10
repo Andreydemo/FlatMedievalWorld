@@ -26,8 +26,8 @@ public class AuthenticationService {
     public static final String USER_COLLECTION = "users";
 
 
-    public ServiceResponse register(User user) {
-        ServiceResponse serviceResponse = new ServiceResponse();
+    public ServiceResponse<User> register(User user) {
+        ServiceResponse<User> serviceResponse = new ServiceResponse();
         if (isUserExist(user)) {
             serviceResponse.setSuccess(false);
             serviceResponse.getErrors().add("user exists");
@@ -37,10 +37,11 @@ public class AuthenticationService {
         user.setPlayerId(player.getId());
         mongoTemplate.insert(user, USER_COLLECTION);
         serviceResponse.setSuccess(true);
+        serviceResponse.setObject(user);
         return serviceResponse;
     }
 
-    public ServiceResponse login(User user, Profile profile) {
+    public ServiceResponse<User> login(User user, Profile profile) {
         ServiceResponse serviceResponse = new ServiceResponse();
         User user1 = getUserByLogin(user);
         if (user1 == null) {
@@ -55,10 +56,9 @@ public class AuthenticationService {
         }
         serviceResponse.setSuccess(true);
         profile.setUser(user1);
+        serviceResponse.setObject(user1);
         return serviceResponse;
     }
-
-
 
 
     public boolean isUserExist(User user) {

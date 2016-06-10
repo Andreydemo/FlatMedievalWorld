@@ -1,5 +1,7 @@
 package com.demosoft.testgameserver.update;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 /**
  * Created by Andrii_Korkoshko on 5/26/2016.
  */
+@Component
 public class EventManager {
 
     private HashMap<Long, Event> events = new HashMap<>();

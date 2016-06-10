@@ -26,6 +26,8 @@ public class Player {
 
     public Calendar lastActivity;
 
+    public long snapshot;
+
     public Player() {
         id = UUID.randomUUID().toString();
     }
@@ -63,5 +65,13 @@ public class Player {
     public void put(Player player){
         this.id = player.id;
         this.point = player.point;
+    }
+
+    public long getSnapshot() {
+        return snapshot;
+    }
+
+    public void setSnapshot(long snapshot) {
+        this.snapshot = snapshot;
     }
 }

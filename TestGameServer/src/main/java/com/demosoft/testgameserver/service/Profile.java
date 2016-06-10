@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class Profile {
 
     private User user;
-    private boolean logedIn;
+    private boolean logedIn = false;
 
     @Autowired
     private Player player;
