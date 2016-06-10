@@ -1,5 +1,7 @@
 package com.demosoft.testgame;
 
+import com.demosoft.testgame.scene.LoginScene;
+import com.demosoft.testgame.scene.MainMenuScene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -7,8 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Created by Andrii_Korkoshko on 5/19/2016.
@@ -28,6 +28,8 @@ public class GameWindow extends JFrame {
 
     @Autowired
     private MainMenuScene mainMenuScene;
+    @Autowired
+    private LoginScene loginScene;
 
 
     @PostConstruct
@@ -42,7 +44,7 @@ public class GameWindow extends JFrame {
         //frame.getContentPane().add(emptyLabel, BorderLayout.CENTER);
 
         this.setBounds(x, y, width, height);
-        this.setContentPane(mainMenuScene);
+        this.setContentPane(loginScene);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 

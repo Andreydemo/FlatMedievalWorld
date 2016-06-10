@@ -1,5 +1,6 @@
-package com.demosoft.testgame;
+package com.demosoft.testgame.scene;
 
+import com.demosoft.testgame.*;
 import com.demosoft.testgame.map.enity.Cell;
 import com.demosoft.testgame.map.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
