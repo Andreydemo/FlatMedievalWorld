@@ -13,7 +13,7 @@
           class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="objectMapper" ref="jacksonObjectMapper"/>
     </bean>
-    <bean id="jacksonObjectMapper" class="com.demosoft.testgame.rest.MyJsonMapper"/>
+    <bean id="jacksonObjectMapper" class="com.demosoft.flatworld.rest.MyJsonMapper"/>
 
 
 

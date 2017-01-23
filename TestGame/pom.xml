@@ -11,6 +11,7 @@
 
     <properties>
         <java.library.path>src/main/lib</java.library.path>
+        <libGDX.version>1.9.5</libGDX.version>
     </properties>
     <dependencies>
         <dependency>
@@ -43,29 +44,29 @@
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
-            <version>1.9.3</version>
+            <version>${libGDX.version}</version>
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-platform</artifactId>
-            <version>1.9.3</version>
+            <version>${libGDX.version}</version>
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl</artifactId>
-            <version>1.9.3</version>
+            <version>${libGDX.version}</version>
         </dependency>
         <!-- http://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-freetype -->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-freetype</artifactId>
-            <version>1.9.3</version>
+            <version>${libGDX.version}</version>
         </dependency>
         <!-- http://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-freetype-platform -->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-freetype-platform</artifactId>
-            <version>1.9.3</version>
+            <version>${libGDX.version}</version>
         </dependency>
         <dependency>
             <groupId>gdx-natives</groupId>
@@ -90,7 +91,7 @@
                 <includes>
                     <include>appConfiguration.properties</include>
                     <include>mainMenuConfigurations.properties</include>
-                    <include>**/*.png</include>
+                    <include>**/**</include>
                 </includes>
             </resource>
             <resource>
@@ -117,7 +118,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Launcher</mainClass>
+                            <mainClass>com.demosoft.flatworld.Launcher</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
